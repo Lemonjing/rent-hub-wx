@@ -1,0 +1,11 @@
+<!--list.wxml-->
+<view>
+  <view class="list-line">
+    <view class="classname">content1</view>
+    <view class="classname">time2</view>
+  </view>
+  <view class="list-line">
+    <view class="classname">content2</view>
+    <view class="classname">time2</view>
+  </view>
+</view>

@@ -1,0 +1,17 @@
+<!-- detail.wxss -->
+
+.about-list {
+  display: flex;
+  flex-direction: column;
+  padding: 40rpx;
+}
+.about-item {
+  margin: 10rpx;
+}
+
+.about-footer {
+  position:absolute;
+  bottom:6rpx;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 28rpx;
+}
