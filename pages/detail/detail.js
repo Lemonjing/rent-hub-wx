@@ -4,13 +4,13 @@ var app = getApp()
 
 Page({
   data: {
-    motto: 'RentHub',
+    info: { id: 1, title: "AAA", img: "/images/settings-81-filled.png", time: "2017-5-1", content: "neirong"}
   },
 
-  bindViewTap: function() {
+  bindViewTap: function () {
     console.log('===about.js@bindViewTap===');
   },
-  
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -66,7 +66,7 @@ Page({
   onShareAppMessage: function () {
     console.log('===about.js@onShareAppMessage===');
   },
-  
+
   // Event handler.
   viewTap: function () {
     this.setData({

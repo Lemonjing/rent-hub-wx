@@ -8,11 +8,15 @@
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "RentHub",
+    "navigationBarBackgroundColor": "#3cc51f",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
+    "color": "#353535",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
     "list": [
       {
         "pagePath": "pages/index/index",

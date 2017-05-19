@@ -1,5 +1,5 @@
 <!--about.wxml-->
-<view class="container about-list">
+<view class="container">
     <text class="about-item">{{motto}}</text>
     <text class="about-item">租房信息聚合平台</text>
     <text class="about-footer">Powered by Insomnia | © 2017 梦回少年</text>

@@ -4,13 +4,32 @@ var app = getApp()
 
 Page({
   data: {
-    motto: 'RentHub',
+    list: [{ title: "杭州", image: "/images/menu-81.png" },
+    { title: "杭州2", image: "/images/menu-81-filled.png" }
+    ],
+    loading: false,
+    plain: false
   },
 
-  bindViewTap: function() {
-    console.log('===about.js@bindViewTap===');
+  loadMore(e) {
+    if (this.data.list.length === 0) return
+    var date = this.getNextDate()
+    var that = this
+    that.setData({ loading: true })
+    wx.request({
+      url: 'http://news.at.zhihu.com/api/4/news/before/' + (Number(utils.formatDate(date)) + 1),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      success(res) {
+        that.setData({
+          loading: false,
+          list: that.data.list.concat([{ header: utils.formatDate(date, '-') }]).concat(res.data.stories)
+        })
+      }
+    })
   },
-  
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -66,7 +85,7 @@ Page({
   onShareAppMessage: function () {
     console.log('===about.js@onShareAppMessage===');
   },
-  
+
   // Event handler.
   viewTap: function () {
     this.setData({
