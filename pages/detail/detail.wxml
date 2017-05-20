@@ -2,6 +2,6 @@
 <view class="container about-list">
     <view>{{info.title}}</view>
     <view>{{info.time}}</view>
-    <view><image src="{{info.img}}" class="detail-img" mode="scaleToFill"></image></view>
+    <view><image src="{{info.image[0]}}" class="img" mode="scaleToFill"></image></view>
     <view>{{info.content}}</view>
 </view>
