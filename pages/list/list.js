@@ -4,9 +4,7 @@ var app = getApp()
 
 Page({
   data: {
-    list: [{ title: "杭州", image: "/images/menu-81.png" },
-    { title: "杭州2", image: "/images/menu-81-filled.png" }
-    ],
+    list: {},
     loading: false,
     plain: false
   },
@@ -34,56 +32,68 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function () {
-    console.log('===about.js@onLoad===');
+    var that = this
+    wx.request({
+      url: 'http://127.0.0.1:5000/api/lists',
+      data: {},
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        console.log(res.data)
+        that.setData({ list: res.data.topic_list })
+      }
+    })
+    console.log('===list.js@onLoad===');
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log('===about.js@onShow===');
+    console.log('===list.js@onShow===');
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    console.log('===about.js@onReady===');
+    console.log('===list.js@onReady===');
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    console.log('===about.js@onHide===');
+    console.log('===list.js@onHide===');
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log('===about.js@onUnload===');
+    console.log('===list.js@onUnload===');
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    console.log('===about.js@onPullDownRefresh===');
+    console.log('===list.js@onPullDownRefresh===');
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log('===about.js@onReachBottom===');
+    console.log('===list.js@onReachBottom===');
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    console.log('===about.js@onShareAppMessage===');
+    console.log('===list.js@onShareAppMessage===');
   },
 
   // Event handler.

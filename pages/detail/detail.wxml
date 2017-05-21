@@ -1,7 +1,15 @@
 <!--detail.wxml-->
-<view class="container about-list">
-    <view>{{info.title}}</view>
-    <view>{{info.time}}</view>
-    <view><image src="{{info.image[0]}}" class="img" mode="scaleToFill"></image></view>
-    <view>{{info.content}}</view>
+<view class="container">
+  <view class="detail-container">
+    <view>
+      <text>{{info.title}}</text>
+      <text>{{info.posttime}}</text>
+    </view>
+    <view>
+      <image src="{{info.image[0]}}" class="img" mode="scaleToFill"></image>
+    </view>
+    <view class="detail-content">
+      <text>{{info.content}}</text>
+    </view>
+  </view>
 </view>
