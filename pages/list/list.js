@@ -4,26 +4,48 @@ var app = getApp()
 
 Page({
   data: {
-    list: {},
+    list: [],
+    offset:0,
     loading: false,
     plain: false
   },
 
   loadMore(e) {
     if (this.data.list.length === 0) return
-    var date = this.getNextDate()
-    var that = this
-    that.setData({ loading: true })
+    this.setData({ loading: true })
+    this.setData({ plain: true })
+    var currentOffset = e.currentTarget.dataset.offset;
+    var that = this;
+    var currentLimit = 500;
     wx.request({
-      url: 'http://news.at.zhihu.com/api/4/news/before/' + (Number(utils.formatDate(date)) + 1),
+      url: 'http://127.0.0.1:5000/api/lists',
+      data: { offset: currentOffset, limit: currentLimit },
       headers: {
         'Content-Type': 'application/json'
       },
       success(res) {
         that.setData({
-          loading: false,
-          list: that.data.list.concat([{ header: utils.formatDate(date, '-') }]).concat(res.data.stories)
+          loading: false, plain:false,
+          offset: res.data.topic_list.length + currentOffset,
+          list: that.data.list.concat(res.data.topic_list)
         })
+      }
+    })
+  },
+
+  loadData: function (offset) {
+    var that = this
+    var limit = 8
+    wx.request({
+      url: 'http://127.0.0.1:5000/api/lists/',
+      data: {offset:offset, limit:limit},
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        that.setData({ list: res.data.topic_list });
+        var newoffset = res.data.topic_list.length + offset
+        that.setData({ offset: newoffset});
       }
     })
   },
@@ -32,18 +54,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function () {
-    var that = this
-    wx.request({
-      url: 'http://127.0.0.1:5000/api/lists',
-      data: {},
-      header: {
-        'content-type': 'application/json'
-      },
-      success: function (res) {
-        console.log(res.data)
-        that.setData({ list: res.data.topic_list })
-      }
-    })
+    this.loadData(0);
     console.log('===list.js@onLoad===');
   },
 

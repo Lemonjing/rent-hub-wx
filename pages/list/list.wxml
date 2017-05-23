@@ -16,6 +16,10 @@
         <view class="news-item">
           <view class="news-item-left">
             <text class="news-item-title">{{item.title}}</text>
+            <view class="news-item-left-bottom">
+              <image src="{{item.headimage}}" class="userface"/>
+              <text class="news-item-time">{{item.posttime}}</text>
+            </view>
           </view>
           <view class="news-item-right">
             <image src="{{item.image}}" class="news-image" />
@@ -23,7 +27,8 @@
         </view>
       </navigator>
     </block>
-    <button type="primary" class="load-btn" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore"> 更多 </button>
+    <button type="primary" class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore"> 更多 </button>
+    <text>=={{offset}}==</text>
   </view>
 
 </view>
