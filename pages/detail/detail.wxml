@@ -1,15 +1,53 @@
 <!--detail.wxml-->
 <view class="container">
-  <view class="detail-container">
-    <view>
-      <text>{{info.title}}</text>
-      <text>{{info.posttime}}</text>
+  <view class="question" bindtap="toQuestion">
+    <text class="question-title">{{info.title}}</text>
+  </view>
+  <view class="answerer-wrp">
+    <view class="bg-half"></view>
+    <view class="answerer flex-wrp">
+      <view class="avatar flex-item">
+        <image src="{{info.headimage}}"></image>
+      </view>
+      <view class="answerer-info flex-item">
+        <text class="answerer-name">{{info.user}}</text>
+        <text class="answerer-des">数据来源：{{info.source}}</text>
+      </view>
+      <view class="follow flex-item">
+        <text>十 关注</text>
+      </view>
     </view>
-    <view>
-      <image src="{{info.image[0]}}" class="img" mode="scaleToFill"></image>
+  </view>
+  
+  <view class="answer-content">
+  <view class="time">发布时间:{{info.posttime}}</view>
+  <view class="time">最后更新:{{info.posttime}}</view>
+    <import src="../common/template.wxml" />
+    <template is="infoDetail" data="{{wxml_content}}"/>
+  </view>
+
+  <view class="answer-footer flex-wrp">
+    <view class="good flex-item">
+      <view class="good-bad">
+        <image src="../../images/good-bad.png"></image>
+      </view>
+      <view class="good-num">{{pageCount}}k</view>
     </view>
-    <view class="detail-content">
-      <text>{{info.content}}</text>
+    <view class="operation-wrp flex-item">
+      <view class="operation flex-wrp flex-tab">
+        <view class="operation-btn flex-item">
+          <image src="../../images/heart2.png"></image>
+          <text>点赞</text>
+        </view>
+        <view class="operation-btn flex-item">
+          <image src="../../images/star2.png"></image>
+          <text>收藏</text>
+        </view>
+        <view class="operation-btn flex-item">
+          <image src="../../images/comment.png"></image>
+          <text>{{info.note}}</text>
+        </view>
+      </view>
     </view>
   </view>
 </view>

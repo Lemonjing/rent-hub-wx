@@ -1,11 +1,34 @@
-<!--index.wxml-->
+<!--list.wxml-->
 <view class="container">
-  <view bindtap="bindViewTap" class="userinfo">
-    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+<view class="search flex-wrp">
+      <view class="search-left flex-item">
+          <image src="../../images/search.png"></image>
+          <input placeholder="全局搜索租房信息" placeholder-class="search-placeholder"/>
+      </view>
+      <view class="search-right flex-item" bindtap="loadData">
+          <image src="../../images/lighting.png"></image>
+      </view>
   </view>
 
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+  <view class="news-item-container">
+    <block wx:for="{{list}}" wx:for-index="itr_index" wx:key="id">
+      <navigator url="../detail/detail?id={{item.id}}">
+        <view class="news-item">
+          <view class="news-item-left">
+            <text class="news-item-title">{{item.title}}</text>
+            <view class="news-item-left-bottom">
+              <image src="{{item.headimage}}" class="userface" />
+              <text class="news-item-time">{{item.updatetime}}</text>
+            </view>
+          </view>
+          <view class="news-item-right">
+            <image src="{{item.coverimage}}" class="news-image" data-errorimg="{{itr_index}}" binderror="errorImg"/>
+          </view>
+        </view>
+      </navigator>
+    </block>
+    <button type="primary" class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore"> 更多 </button>
+    <text>=={{offset}}==</text>
   </view>
+
 </view>

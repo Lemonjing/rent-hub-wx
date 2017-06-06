@@ -1,22 +1,46 @@
 //detail.js
+var htmlToWxml = require('../../utils/htmlToWxml.js');
 var util = require('../../utils/util.js')
 var app = getApp()
 
 Page({
   data: {
-    info:{}
+    info: {},
+    wxml_content: {},
+    pageCount:1
   },
 
   bindViewTap: function () {
     console.log('===detail.js@bindViewTap===');
   },
 
+  stockClick: function (e) {
+    var secCode = e.currentTarget.dataset.seccode;
+    var secName = e.currentTarget.dataset.secname;
+    console.log("stockClick:" + secCode + ";secName:" + secName);
+  },
+  
+  imageLoad: function (e) {
+    var width = e.detail.width;
+    var height = e.detail.height;
+    var windowWidth = wx.getSystemInfoSync().windowWidth - 30;
+    var picHeight = (height / width) * windowWidth;
+    var index = e.currentTarget.dataset.index;
+    this.data.wxml_content[index].attr.height = picHeight;
+    this.setData({
+      wxml_content: this.data.wxml_content
+    });
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: "加载中..."
+    });
+    console.log("options.id=", options.id)
     var that = this
-    console.log('=====detail.js@onload'+options.id+'========')
     wx.request({
       url: 'http://127.0.0.1:5000/api/detail/' + options.id,
       data: {},
@@ -24,8 +48,15 @@ Page({
         'content-type': 'application/json'
       },
       success: function (res) {
-        console.log(res.data)
-        that.setData({ info: res.data.detail })
+        console.log(res.data);
+        var json_content = htmlToWxml.html2json(res.data.detail.content);
+        // console.log(json_content);
+        that.setData({ info: res.data.detail, wxml_content: json_content });
+        // console.log(that.data.wxml_content);
+      },
+      complete: function () {
+        // 关闭loading
+        wx.hideLoading();
       }
     })
     console.log('===detail.js@onLoad===');
@@ -35,6 +66,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var pageCount = Math.random() * 10 + Math.random();
+    pageCount = pageCount.toFixed(1);
+    this.setData({ pageCount: pageCount });
+    console.log(pageCount);
     console.log('===detail.js@onShow===');
   },
 

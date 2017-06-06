@@ -1,10 +1,11 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/logs/logs",
-    "pages/about/about",
     "pages/list/list",
-    "pages/detail/detail"
+    "pages/detail/detail",
+    "pages/more/more",
+    "pages/relief/relief",
+    "pages/about/about"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -16,7 +17,7 @@
     "color": "#353535",
     "selectedColor": "#3cc51f",
     "borderStyle": "white",
-    "backgroundColor": "#ffffff",
+    "backgroundColor": "#FBFBFB",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -26,13 +27,13 @@
       },
       {
         "pagePath": "pages/list/list",
-        "text": "列表",
+        "text": "发现",
         "iconPath": "images/menu-81.png",
         "selectedIconPath": "images/menu-81-filled.png"
       },
       {
-        "pagePath": "pages/about/about",
-        "text": "关于",
+        "pagePath": "pages/more/more",
+        "text": "更多",
         "iconPath": "images/settings-81.png",
         "selectedIconPath": "images/settings-81-filled.png"
       }

@@ -1,34 +1,82 @@
 <!--list.wxml-->
+<import src="../common/template.wxml"/>
 <view class="container">
-  <!--<swiper indicator-dots="{{indicatorDots}}"
-  autoplay="{{autoplay}}" class="banners" interval="{{interval}}" duration="{{duration}}">
-    <block wx:for="{{banner}}">
-      <swiper-item class="banner" >
-          <image src="{{item.image}}"  data-id="{{item.id}}" bindtap="bindViewTap" class="banner-image" width="100%" height="100%"/>
-          <text class="banner-title">{{item.title}}</text>
-      </swiper-item>
+  <view class="top-tab flex-wrp flex-tab ">
+    <view class="toptab flex-item {{currentNavtab==idx ? 'active' : ''}}" wx:for="{{navTab}}" wx:for-index="idx" wx:for-item="itemName" data-idx="{{idx}}" bindtap="switchTab" wx:key="*this">
+      {{itemName}}
+    </view>
+  </view>
+  <view class="news-item-container" hidden="{{currentNavtab==0 ? '' : true}}">
+    <swiper class="activity" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+      <block wx:for="{{rmd_list}}" wx:for-index="idx" wx:key="id">
+        <swiper-item wx:if="{{idx <= 2}}">
+          <image src="{{item.coverimage}}" class="slide-image" bindtap="swiperClick" data-id="{{item.id}}" width="355" height="155" />
+        </swiper-item>
+      </block>
+    </swiper>
+    <block wx:for="{{rmd_list}}" wx:for-index="idx" wx:key="id">
+      <navigator url="../detail/detail?id={{item.id}}" wx:if="{{idx > 2}}">
+        <view class="news-item">
+          <view class="news-item-left">
+            <text class="news-item-title">{{item.title}}</text>
+            <view class="news-item-left-bottom">
+              <image src="{{item.headimage}}" class="userface" />
+              <text class="news-item-time">{{item.updatetime}}</text>
+            </view>
+          </view>
+          <view class="news-item-right">
+            <image src="{{item.coverimage}}" class="news-image" data-errorimg="{{idx}}" binderror="errorImg"/>
+          </view>
+        </view>
+      </navigator>
     </block>
-  </swiper>-->
-  <view class="news-item-container">
-    <block wx:for="{{list}}" wx:for-index="id">
-      <!--<text wx:if="{{item.header}}" class="sub-title">{{item.header}}</text>-->
+  </view>
+
+  <view class="ctnt1 placehold" hidden="{{currentNavtab==1 ? '' : true}}">
+     <template is="search" data=""/>
+     <block wx:for="{{list}}" wx:for-index="idx" wx:key="id">
       <navigator url="../detail/detail?id={{item.id}}">
         <view class="news-item">
           <view class="news-item-left">
             <text class="news-item-title">{{item.title}}</text>
             <view class="news-item-left-bottom">
-              <image src="{{item.headimage}}" class="userface"/>
-              <text class="news-item-time">{{item.posttime}}</text>
+              <image src="{{item.headimage}}" class="userface" />
+              <text class="news-item-time">{{item.updatetime}}</text>
             </view>
           </view>
           <view class="news-item-right">
-            <image src="{{item.image}}" class="news-image" />
+            <image src="{{item.coverimage}}" class="news-image" binderror="errorImg" data-errorimg="{{idx}}"/>
           </view>
         </view>
       </navigator>
     </block>
-    <button type="primary" class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore"> 更多 </button>
-    <text>=={{offset}}==</text>
+     <template is="button" data="{{offset,plain,loading}}" />
+  </view>
+ 
+  <view class="ctnt2 placehold" hidden="{{currentNavtab==2 ? '' : true}}">
+    <template is="search" data=""/>
+    <block wx:for="{{list}}" wx:for-index="idx" wx:key="id">
+      <navigator url="../detail/detail?id={{item.id}}">
+        <view class="news-item">
+          <view class="news-item-left">
+            <text class="news-item-title">{{item.title}}</text>
+            <view class="news-item-left-bottom">
+              <image src="{{item.headimage}}" class="userface" />
+              <text class="news-item-time">{{item.updatetime}}</text>
+            </view>
+          </view>
+          <view class="news-item-right">
+            <image src="{{item.coverimage}}" class="news-image" />
+          </view>
+        </view>
+      </navigator>
+    </block>
+    <template is="button" data="{{offset,plain,loading}}" />
+  </view>
+    
+  <view class="ctnt3 placehold" hidden="{{currentNavtab==3 ? '' : true}}">
+     <template is="search" data=""/>
+     <template is="button" data="{{offset,plain,loading}}" />
   </view>
 
 </view>

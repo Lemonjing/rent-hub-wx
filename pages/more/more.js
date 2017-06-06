@@ -1,4 +1,4 @@
-//about.js
+//index.js
 var util = require('../../utils/util.js')
 var app = getApp()
 
@@ -80,6 +80,18 @@ Page({
   viewTap: function () {
     this.setData({
       text: 'Set some data for updating view.'
+    })
+  },
+
+  relief: function () {
+    wx.navigateTo({
+      url: '../relief/relief',
+    })
+  },
+
+  aboutme: function () {
+    wx.navigateTo({
+      url: '../about/about',
     })
   },
 

@@ -1,6 +1,38 @@
-<!--about.wxml-->
 <view class="container">
-    <text class="about-item">{{motto}}</text>
-    <text class="about-item">租房信息聚合平台</text>
-    <text class="about-footer">Powered by Insomnia | © 2017 梦回少年</text>
+
+<view class="content">
+<view class="content-wrap">
+<text class="title">RentHub简介</text>
+<text>
+「RentHub」租房信息聚合平台主要实现的一个功能是解决了在日常使用租房app时，租房信息分类较多，虽然分类提高了管理的效率，但是对急需要定位目标房源信息却产生了阻碍的问题。偶然间看到冯大辉（互联网技术专家）的无码科技产品「ReadHub」新闻聚合产品而产生了「RentHub」的小程序灵感。故完成了这样一个简单的应用。</text>
+<text>\n\n</text>
+<text>
+「RentHub」主要聚合了豆瓣、58、赶集等租房信息，提供了统一的租房信息查询和搜索以及发布和更新时间排序用户核心需求功能，贴切小程序的所见及所得，用完即走的特点，未来会继续更新，请保持关注，谢谢。</text>
+</view>
+
+<view class="content-wrap">
+<text class="title">使用的第三方开源软件或产品\n</text>
+<text>Sqlite\n</text>
+<text>JSONKit\n</text>
+<text>Python Flask\n</text>
+<text>Python requests\n</text>
+<text>Python Beautifulsoup\n</text>
+<text>Restful api\n</text>
+<text>icons8\n</text>
+<text>markdown\n</text>
+</view>
+
+<view class="content-wrap">
+<text class="title">联系作者\n</text>
+<text>站点：http://taoxiaoran.top\n</text>
+<text>微博：风屿alter\n</text>
+<text>邮箱：xmusaber@163.com\n</text>
+<text>GitHub：lemonjing\n\n</text>
+</view>
+<view class="qrcode">
+<text>当然，也可以关注我的微信公众号「梦回少年」，扫一扫，加关注，欢迎各种交流。</text>
+<image src="http://7xlkoc.com1.z0.glb.clouddn.com/qrcodenew.jpg" mode="scaleToFill"></image>
+</view>
+</view>
+<view class="copyright">Powered by Insomnia ©2017 RentHub</view>
 </view>

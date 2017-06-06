@@ -5,27 +5,72 @@ var app = getApp()
 Page({
   data: {
     list: [],
-    offset:0,
+    offset: 0,
     loading: false,
-    plain: false
+    plain: false,
+    navTab: ["推荐", "杭州", "上海", "收藏"],
+    currentNavtab: "0",
+    indicatorDots: true,
+    autoplay: true,
+    interval: 5000,
+    duration: 1000
   },
+  switchTab: function (e) {
+    this.setData({
+      currentNavtab: e.currentTarget.dataset.idx
+    });
+    this.loadCityData(0);
+  },
+  swiperClick: function (e) {//点击图片触发事件
+    wx.navigateTo({
+      url: '../detail/detail?id=1',
+    })
+  },
+  // 城市列表图片404
+  errorImg: function (e) {
+    var errorImgIndex = e.target.dataset.errorimg //获取循环的下标
+    var replaceImgUrl = "http://tgi1.jia.com/117/511/17511183.jpg";
+    this.data.list[errorImgIndex].coverimage = replaceImgUrl;
+    this.setData(
+      {list: this.data.list}
+    );
+  },
+  // 推荐列表图片404
+  rmdErrorImg: function (e) {
+    var errorImgIndex = e.target.dataset.errorimg //获取循环的下标
+    var replaceImgUrl = "http://tgi1.jia.com/117/511/17511183.jpg";
+    this.data.rmd_list[errorImgIndex].coverimage = replaceImgUrl;
+    this.setData(
+      { list: this.data.rmd_list }
+    );
+  },
+  loadCityMore(e) {
+    console.log("city", this.data.currentNavtab)
+    var city = this.data.currentNavtab - 1;
 
-  loadMore(e) {
+    console.log("city@loadCityMore", this.data.currentNavtab);
+
     if (this.data.list.length === 0) return
     this.setData({ loading: true })
     this.setData({ plain: true })
     var currentOffset = e.currentTarget.dataset.offset;
     var that = this;
-    var currentLimit = 500;
+    var currentLimit = 10;
     wx.request({
-      url: 'http://127.0.0.1:5000/api/lists',
-      data: { offset: currentOffset, limit: currentLimit },
+      url: 'http://127.0.0.1:5000/api/lists/',
+      data: { offset: currentOffset, limit: currentLimit, city: city },
       headers: {
         'Content-Type': 'application/json'
       },
       success(res) {
+        if (res.data.topic_list.length == 0) {
+          wx.showToast({
+            title: "没有更多了"
+          });
+        }
         that.setData({
-          loading: false, plain:false,
+          loading: false,
+          plain: false,
           offset: res.data.topic_list.length + currentOffset,
           list: that.data.list.concat(res.data.topic_list)
         })
@@ -33,19 +78,61 @@ Page({
     })
   },
 
-  loadData: function (offset) {
+  loadCityData: function (offset) {
+    console.log("city@loadCityData", this.data.currentNavtab);
+
+    var city = this.data.currentNavtab - 1;
+    // 显示loading
+    wx.showLoading({
+      title: "加载中..."
+    });
     var that = this
     var limit = 8
     wx.request({
       url: 'http://127.0.0.1:5000/api/lists/',
-      data: {offset:offset, limit:limit},
+      data: { offset: offset, limit: limit, city: city },
       header: {
         'content-type': 'application/json'
       },
       success: function (res) {
-        that.setData({ list: res.data.topic_list });
-        var newoffset = res.data.topic_list.length + offset
-        that.setData({ offset: newoffset});
+        if (city == 1) {
+          that.setData({ list: res.data.topic_list });
+        } else {
+          that.setData({ list: res.data.topic_list });
+        }
+        var newoffset = res.data.topic_list.length + offset;
+        that.setData({ offset: newoffset });
+      },
+      complete: function () {
+        // 关闭loading
+        wx.hideLoading();
+      }
+    })
+  },
+
+  /**
+   * 加载推荐数据
+   */
+  loadRmdData: function () {
+    // 显示loading
+    wx.showLoading({
+      title: "加载中..."
+    });
+    var that = this
+    var limit = 8
+    wx.request({
+      url: 'http://127.0.0.1:5000/api/recommended/',
+      data: { limit: limit },
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        console.log("rmd_list", res.data.rmd_list);
+        that.setData({ rmd_list: res.data.rmd_list });
+      },
+      complete: function () {
+        // 关闭loading
+        wx.hideLoading();
       }
     })
   },
@@ -54,7 +141,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function () {
-    this.loadData(0);
+    this.loadRmdData();
     console.log('===list.js@onLoad===');
   },
 
@@ -69,6 +156,9 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    wx.setNavigationBarTitle({
+      title: '信息列表',
+    })
     console.log('===list.js@onReady===');
   },
 

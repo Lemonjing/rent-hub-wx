@@ -1,0 +1,39 @@
+<!--详情页模板-->
+<template name="infoDetail">
+    <block wx:for="{{wxml_content}}"  wx:for-index="itr_index"  wx:for-item="cellData">
+        <block  wx:if="{{cellData.type == 'view'}}">
+            <view class="p">
+                <block  wx:for="{{cellData.child}}" wx:for-item="itr_item" wx:key="text">
+                    <block  wx:if="{{itr_item.type == 'a'}}">
+                        <text class="a" data-seccode="{{itr_item.attr['data-seccode']}}" data-secname="{{itr_item.attr['data-secname']}}" bindtap="stockClick">{{itr_item.text}}</text>
+                    </block>
+                    <block  wx:else>
+                        <text>{{itr_item.text}}</text>
+                    </block>
+                </block>
+            </view>
+        </block>
+        <block wx:if="{{cellData.type == 'img'}}">
+            <image class="img" style="height: {{cellData.attr.height?cellData.attr.height:0}}px"  mode="aspectFit" src="{{cellData.attr.src}}" bindload="imageLoad"></image>
+        </block>
+    </block>
+</template>
+
+<template name="search">
+  <view class="search flex-wrp">
+    <view class="search-left flex-item">
+      <image src="../../images/search.png"></image>
+      <input placeholder="搜索话题, 问题或人" placeholder-class="search-placeholder" />
+    </view>
+    <view class="search-right flex-item" bindtap="loadData">
+      <image src="../../images/lighting.png"></image>
+    </view>
+  </view>
+</template>
+
+<template name="button">
+  <button type="primary" class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadCityMore"> 更多 </button>
+  <text>=={{offset}}==</text>
+  <text>=={{loading}}==</text>
+  <text>=={{plain}}==</text>
+</template>
