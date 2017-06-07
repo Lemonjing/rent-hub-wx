@@ -7,9 +7,10 @@ Page({
     list: [],
     offset: 0,
     loading: false,
-    plain:false
+    plain:false,
+    sortTab:0
   },
-  // solve img 404
+  // 解决图片404错误
   errorImg: function (e) {
     var errorImgIndex = e.target.dataset.errorimg //获取循环的下标
     var replaceImgUrl = "http://tgi1.jia.com/117/511/17511183.jpg";
@@ -25,9 +26,13 @@ Page({
     var currentOffset = e.currentTarget.dataset.offset;
     var that = this;
     var currentLimit = 10;
+    var sortTab = this.data.sortTab
+
+    console.log("#2 sortTab=", sortTab)
+
     wx.request({
       url: 'http://127.0.0.1:5000/api/lists/all/',
-      data: { offset: currentOffset, limit: currentLimit },
+      data: { offset: currentOffset, limit: currentLimit, sort: sortTab},
       headers: {
         'Content-Type': 'application/json'
       },
@@ -54,9 +59,13 @@ Page({
     });
     var that = this
     var limit = 8
+    var sortTab = this.data.sortTab
+
+    console.log("#1 sortTab=", sortTab)
+
     wx.request({
       url: 'http://127.0.0.1:5000/api/lists/all/',
-      data: { offset: offset, limit: limit },
+      data: { offset: offset, limit: limit, sort: sortTab},
       header: {
         'content-type': 'application/json'
       },
@@ -71,7 +80,20 @@ Page({
       }
     })
   },
-
+  // 列表排序
+  sortlist: function (e) {
+    console.log("#0 enter sortlist")
+    var sort = e.currentTarget.dataset.idx;
+    this.setData({
+      sortTab: e.currentTarget.dataset.idx
+    });
+    var that = this;
+    this.loadData(0);
+    console.log("#0 quit sortlist")
+  },
+  refresh:function() {
+    this.loadData(0);
+  },
   /**
    * 生命周期函数--监听页面加载
    */

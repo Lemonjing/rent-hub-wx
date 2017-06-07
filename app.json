@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/splash/splash",
     "pages/index/index",
     "pages/list/list",
     "pages/detail/detail",
@@ -10,12 +11,12 @@
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarTitleText": "RentHub",
-    "navigationBarBackgroundColor": "#3cc51f",
+    "navigationBarBackgroundColor": "#36828b",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
     "color": "#353535",
-    "selectedColor": "#3cc51f",
+    "selectedColor": "#36828b",
     "borderStyle": "white",
     "backgroundColor": "#FBFBFB",
     "list": [

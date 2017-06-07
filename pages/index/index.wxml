@@ -5,9 +5,15 @@
           <image src="../../images/search.png"></image>
           <input placeholder="全局搜索租房信息" placeholder-class="search-placeholder"/>
       </view>
-      <view class="search-right flex-item" bindtap="loadData">
+      <view class="search-right flex-item" bindtap="refresh">
           <image src="../../images/lighting.png"></image>
       </view>
+  </view>
+
+  <view class="sort">
+      <view class="{{sortTab==0 ? 'active' : ''}}" bindtap="sortlist" data-idx="0">默认</view>
+      <view class="{{sortTab==1 ? 'active' : ''}}" bindtap="sortlist" data-idx="1">发布时间</view>
+      <view class="{{sortTab==2 ? 'active' : ''}}" bindtap="sortlist" data-idx="2">回复数</view>
   </view>
 
   <view class="news-item-container">
@@ -18,7 +24,9 @@
             <text class="news-item-title">{{item.title}}</text>
             <view class="news-item-left-bottom">
               <image src="{{item.headimage}}" class="userface" />
-              <text class="news-item-time">{{item.updatetime}}</text>
+              <view>
+              <text class="news-item-text1">{{item.user}}</text>
+              <text class="news-item-text2">{{item.updatetime}}</text></view>
             </view>
           </view>
           <view class="news-item-right">
@@ -27,7 +35,7 @@
         </view>
       </navigator>
     </block>
-    <button type="primary" class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore"> 更多 </button>
+    <button type=" " class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore"> 更多 </button>
     <text>=={{offset}}==</text>
   </view>
 

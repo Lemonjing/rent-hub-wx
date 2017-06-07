@@ -21,7 +21,10 @@
             <text class="news-item-title">{{item.title}}</text>
             <view class="news-item-left-bottom">
               <image src="{{item.headimage}}" class="userface" />
-              <text class="news-item-time">{{item.updatetime}}</text>
+              <view>
+                <text class="news-item-text1">{{item.user}}</text>
+                <text class="news-item-text2">{{item.updatetime}}</text>
+              </view>
             </view>
           </view>
           <view class="news-item-right">
@@ -41,7 +44,10 @@
             <text class="news-item-title">{{item.title}}</text>
             <view class="news-item-left-bottom">
               <image src="{{item.headimage}}" class="userface" />
-              <text class="news-item-time">{{item.updatetime}}</text>
+              <view>
+                <text class="news-item-text1">{{item.user}}</text>
+                <text class="news-item-text2">{{item.updatetime}}</text>
+              </view>
             </view>
           </view>
           <view class="news-item-right">
@@ -62,7 +68,10 @@
             <text class="news-item-title">{{item.title}}</text>
             <view class="news-item-left-bottom">
               <image src="{{item.headimage}}" class="userface" />
-              <text class="news-item-time">{{item.updatetime}}</text>
+              <view>
+                <text class="news-item-text1">{{item.user}}</text>
+                <text class="news-item-text2">{{item.updatetime}}</text>
+              </view>
             </view>
           </view>
           <view class="news-item-right">

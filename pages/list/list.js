@@ -15,6 +15,7 @@ Page({
     interval: 5000,
     duration: 1000
   },
+  // 切换navTab设置currentNavtab
   switchTab: function (e) {
     this.setData({
       currentNavtab: e.currentTarget.dataset.idx

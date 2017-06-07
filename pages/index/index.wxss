@@ -35,6 +35,8 @@
 }
 
 .news-item-left-bottom {
+  display: flex;
+  flex-direction: row;
   margin-top:20px;
 }
 
@@ -43,9 +45,17 @@
   height: 40px;
 }
 
-.news-item-time{
+.news-item-text1 {
   font-size: 14px;
   margin-left: 20px;
+  display: block;
+}
+
+.news-item-text2 {
+  font-size: 14px;
+  margin-left: 20px;
+  margin-top: 20rpx;
+  display: block;
 }
 
 .news-item-title {
@@ -66,23 +76,26 @@
   /*display: block;*/
   line-height: 2.3;
   font-size: 13px;
+  color:#fff;
+  background-color: #36828b;
 }
 
 .container .search{
   width: 735rpx;
   height: 65rpx;
   padding: 12.5rpx 0 12.5rpx 16rpx;
-  background: #3cc51f;
+  background: #36828b;
 }
 .container .search-left{
   flex: 8;
-  background: #7CCD7C;
+  background: #B0B0B0;
   text-align: left;
 }
 .container .search-left input{
   display: inline-block;
   height: 65rpx;
   font-size: 26rpx;
+  color:#fff;
 }
 .search-placeholder{
   color: #fff;
@@ -97,8 +110,23 @@
 .container .search .search-right{
   flex: 1;
 }
+
 .container .search .search-right image{
   width: 45rpx;
   height: 45rpx;
   padding: 10rpx;
+}
+
+.sort {
+  width: 400rpx;
+  display: flex;
+  flex-direction:row;
+  justify-content: space-between;
+  font-size:16px;
+  margin-top:20rpx;
+}
+
+.sort .active{
+  color: #000;
+  border-bottom: solid 2px #000;
 }
