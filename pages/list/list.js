@@ -6,6 +6,7 @@ Page({
   data: {
     list: [],
     offset: 0,
+    sortTab: 0,
     loading: false,
     plain: false,
     navTab: ["推荐", "杭州", "上海", "收藏"],
@@ -15,6 +16,7 @@ Page({
     interval: 5000,
     duration: 1000
   },
+
   // 切换navTab设置currentNavtab
   switchTab: function (e) {
     this.setData({
@@ -22,7 +24,9 @@ Page({
     });
     this.loadCityData(0);
   },
-  swiperClick: function (e) {//点击图片触发事件
+
+  //点击图片触发事件
+  swiperClick: function (e) {
     wx.navigateTo({
       url: '../detail/detail?id=1',
     })
@@ -33,7 +37,7 @@ Page({
     var replaceImgUrl = "http://tgi1.jia.com/117/511/17511183.jpg";
     this.data.list[errorImgIndex].coverimage = replaceImgUrl;
     this.setData(
-      {list: this.data.list}
+      { list: this.data.list }
     );
   },
   // 推荐列表图片404
@@ -45,6 +49,27 @@ Page({
       { list: this.data.rmd_list }
     );
   },
+  // 指定城市搜索
+  toSearch: function (e) {
+    var keyword = e.detail.value;
+    //currentNavtab = 1 -> city = 0 杭州
+    //currentNavtab = 2 -> city = 1 上海
+    var city = this.data.currentNavtab - 1;
+    wx.navigateTo({
+      url: '../city-search/city-search?keyword=' + keyword + '&city=' + city,
+    })
+  },
+
+  // 列表排序
+  sortlist: function (e) {
+    var sort = e.currentTarget.dataset.idx;
+    this.setData({
+      sortTab: e.currentTarget.dataset.idx
+    });
+    var that = this;
+    this.loadCityData(0);
+  },
+
   loadCityMore(e) {
     console.log("city", this.data.currentNavtab)
     var city = this.data.currentNavtab - 1;
@@ -80,9 +105,11 @@ Page({
   },
 
   loadCityData: function (offset) {
-    console.log("city@loadCityData", this.data.currentNavtab);
-
     var city = this.data.currentNavtab - 1;
+    var sortTab = this.data.sortTab
+
+    console.log("city,sortTab=", city, sortTab);
+
     // 显示loading
     wx.showLoading({
       title: "加载中..."
@@ -91,16 +118,12 @@ Page({
     var limit = 8
     wx.request({
       url: 'http://127.0.0.1:5000/api/lists/',
-      data: { offset: offset, limit: limit, city: city },
+      data: { offset: offset, limit: limit, city: city, sort: sortTab},
       header: {
         'content-type': 'application/json'
       },
       success: function (res) {
-        if (city == 1) {
-          that.setData({ list: res.data.topic_list });
-        } else {
-          that.setData({ list: res.data.topic_list });
-        }
+        that.setData({ list: res.data.topic_list });
         var newoffset = res.data.topic_list.length + offset;
         that.setData({ offset: newoffset });
       },
@@ -157,9 +180,6 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    wx.setNavigationBarTitle({
-      title: '信息列表',
-    })
     console.log('===list.js@onReady===');
   },
 

@@ -1,9 +1,8 @@
-<!--index.wxml-->
+<!--city-search.wxml-->
 <view class="container">
 <view class="search flex-wrp">
       <view class="search-left flex-item">
-          <image src="../../images/search.png"></image>
-          <input placeholder="全局搜索租房信息" placeholder-class="search-placeholder" bindconfirm="toSearch"/>
+          <text class="search-res">{{cityname[city]}} - 关键字'{{keyword}}'共{{total_count}}条结果</text>
       </view>
       <view class="search-right flex-item" bindtap="refresh">
           <image src="../../images/lighting.png"></image>

@@ -36,7 +36,7 @@
   </view>
 
   <view class="ctnt1 placehold" hidden="{{currentNavtab==1 ? '' : true}}">
-     <template is="search" data=""/>
+     <template is="search" data="{{sortTab}}"/>
      <block wx:for="{{list}}" wx:for-index="idx" wx:key="id">
       <navigator url="../detail/detail?id={{item.id}}">
         <view class="news-item">
@@ -60,7 +60,7 @@
   </view>
  
   <view class="ctnt2 placehold" hidden="{{currentNavtab==2 ? '' : true}}">
-    <template is="search" data=""/>
+    <template is="search" data="{{sortTab}}"/>
     <block wx:for="{{list}}" wx:for-index="idx" wx:key="id">
       <navigator url="../detail/detail?id={{item.id}}">
         <view class="news-item">

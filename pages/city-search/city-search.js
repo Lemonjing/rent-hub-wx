@@ -1,4 +1,4 @@
-//index.js
+//city-search.js
 var util = require('../../utils/util.js')
 var app = getApp()
 
@@ -7,8 +7,12 @@ Page({
     list: [],
     offset: 0,
     loading: false,
-    plain:false,
-    sortTab:0,
+    plain: false,
+    sortTab: 0,
+    keyword: "",
+    city: "",
+    cityname: ['杭州', '上海'],
+    total_count: 0
   },
   // 解决图片404错误
   errorImg: function (e) {
@@ -19,12 +23,6 @@ Page({
       { list: this.data.list }
     );
   },
-  toSearch:function(e) {
-    var keyword = e.detail.value;
-    wx.navigateTo({
-      url: '../index-search/index-search?keyword='+keyword,
-    })
-  },
   loadMore(e) {
     if (this.data.list.length === 0) return
     this.setData({ loading: true })
@@ -32,13 +30,12 @@ Page({
     var currentOffset = e.currentTarget.dataset.offset;
     var that = this;
     var currentLimit = 10;
+    var city = this.data.city
     var sortTab = this.data.sortTab
-
-    console.log("#2 sortTab=", sortTab)
-
+    var keyword = this.data.keyword;
     wx.request({
-      url: 'http://127.0.0.1:5000/api/lists/all/',
-      data: { offset: currentOffset, limit: currentLimit, sort: sortTab},
+      url: 'http://127.0.0.1:5000/api/search/all/',
+      data: { offset: currentOffset, limit: currentLimit, sort: sortTab, city: city, keyword: keyword },
       headers: {
         'Content-Type': 'application/json'
       },
@@ -50,7 +47,7 @@ Page({
         }
         that.setData({
           loading: false,
-          plain:false,
+          plain: false,
           offset: res.data.topic_list.length + currentOffset,
           list: that.data.list.concat(res.data.topic_list)
         })
@@ -58,103 +55,112 @@ Page({
     })
   },
 
-  loadData: function (offset) {
+  // 加载初始数据
+  loadCityData: function (offset) {
     // 显示loading
     wx.showLoading({
-      title:"加载中..."
+      title: "搜索中..."
     });
     var that = this
     var limit = 8
-    var sortTab = this.data.sortTab
-
+    var sortTab = this.data.sortTab;
+    var city = this.data.city;
+    var keyword = this.data.keyword;
     console.log("#1 sortTab=", sortTab)
 
     wx.request({
-      url: 'http://127.0.0.1:5000/api/lists/all/',
-      data: { offset: offset, limit: limit, sort: sortTab},
+      url: 'http://127.0.0.1:5000/api/search/',
+      data: { offset: offset, limit: limit, sort: sortTab, city: city, keyword: keyword },
       header: {
         'content-type': 'application/json'
       },
       success: function (res) {
-        that.setData({ list: res.data.topic_list });
+        that.setData({ list: res.data.topic_list, total_count: res.data.total_count });
         var newoffset = res.data.topic_list.length + offset
         that.setData({ offset: newoffset });
       },
-      complete:function() {
+      complete: function () {
         // 关闭loading
         wx.hideLoading();
       }
     })
   },
+
   // 列表排序
   sortlist: function (e) {
-    console.log("#0 enter sortlist")
     var sort = e.currentTarget.dataset.idx;
     this.setData({
       sortTab: e.currentTarget.dataset.idx
     });
     var that = this;
-    this.loadData(0);
-    console.log("#0 quit sortlist")
+    this.loadCityData(0);
   },
-  refresh:function() {
-    this.loadData(0);
+  
+  //刷新
+  refresh: function () {
+    this.loadCityData(0);
   },
+
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function () {
-    this.loadData(0);
-    console.log('===list.js@onLoad===');
+  onLoad: function (options) {
+    var keyword = options.keyword;
+    var city = options.city;
+    console.log("city-search@onload,keyword=", keyword)
+    console.log("city-search@onload,city=", city)
+    this.setData({ keyword: keyword, city: city });
+    this.loadCityData(0);
+    console.log('===city-search.js@onLoad===');
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log('===list.js@onShow===');
+    console.log('===city-search.js@onShow===');
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    console.log('===list.js@onReady===');
+    console.log('===city-search.js@onReady===');
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    console.log('===list.js@onHide===');
+    console.log('===city-search.js@onHide===');
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log('===list.js@onUnload===');
+    console.log('===city-search.js@onUnload===');
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    console.log('===list.js@onPullDownRefresh===');
+    console.log('===city-search.js@onPullDownRefresh===');
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log('===list.js@onReachBottom===');
+    console.log('===city-search.js@onReachBottom===');
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    console.log('===list.js@onShareAppMessage===');
+    console.log('===city-search.js@onShareAppMessage===');
   },
 
   // Event handler.

@@ -2,7 +2,9 @@
   "pages":[
     "pages/splash/splash",
     "pages/index/index",
+    "pages/index-search/index-search",
     "pages/list/list",
+    "pages/city-search/city-search",
     "pages/detail/detail",
     "pages/more/more",
     "pages/relief/relief",
@@ -22,7 +24,7 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
+        "text": "全部",
         "iconPath": "images/home-81.png",
         "selectedIconPath": "images/home-81-filled.png"
       },

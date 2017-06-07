@@ -1,4 +1,4 @@
-//index.js
+//index-search.js
 var util = require('../../utils/util.js')
 var app = getApp()
 
@@ -7,8 +7,10 @@ Page({
     list: [],
     offset: 0,
     loading: false,
-    plain:false,
-    sortTab:0,
+    plain: false,
+    sortTab: 0,
+    keyword: "",
+    total_count: 0
   },
   // 解决图片404错误
   errorImg: function (e) {
@@ -19,12 +21,6 @@ Page({
       { list: this.data.list }
     );
   },
-  toSearch:function(e) {
-    var keyword = e.detail.value;
-    wx.navigateTo({
-      url: '../index-search/index-search?keyword='+keyword,
-    })
-  },
   loadMore(e) {
     if (this.data.list.length === 0) return
     this.setData({ loading: true })
@@ -33,12 +29,13 @@ Page({
     var that = this;
     var currentLimit = 10;
     var sortTab = this.data.sortTab
+    var keyword = this.data.keyword;
 
     console.log("#2 sortTab=", sortTab)
 
     wx.request({
-      url: 'http://127.0.0.1:5000/api/lists/all/',
-      data: { offset: currentOffset, limit: currentLimit, sort: sortTab},
+      url: 'http://127.0.0.1:5000/api/search/all/',
+      data: { offset: currentOffset, limit: currentLimit, sort: sortTab, keyword: keyword },
       headers: {
         'Content-Type': 'application/json'
       },
@@ -50,7 +47,7 @@ Page({
         }
         that.setData({
           loading: false,
-          plain:false,
+          plain: false,
           offset: res.data.topic_list.length + currentOffset,
           list: that.data.list.concat(res.data.topic_list)
         })
@@ -61,26 +58,26 @@ Page({
   loadData: function (offset) {
     // 显示loading
     wx.showLoading({
-      title:"加载中..."
+      title: "搜索中..."
     });
     var that = this
     var limit = 8
     var sortTab = this.data.sortTab
-
+    var keyword = this.data.keyword;
     console.log("#1 sortTab=", sortTab)
 
     wx.request({
-      url: 'http://127.0.0.1:5000/api/lists/all/',
-      data: { offset: offset, limit: limit, sort: sortTab},
+      url: 'http://127.0.0.1:5000/api/search/all/',
+      data: { offset: offset, limit: limit, sort: sortTab, keyword: keyword },
       header: {
         'content-type': 'application/json'
       },
       success: function (res) {
-        that.setData({ list: res.data.topic_list });
+        that.setData({ list: res.data.topic_list, total_count: res.data.total_count         });
         var newoffset = res.data.topic_list.length + offset
         that.setData({ offset: newoffset });
       },
-      complete:function() {
+      complete: function () {
         // 关闭loading
         wx.hideLoading();
       }
@@ -97,64 +94,69 @@ Page({
     this.loadData(0);
     console.log("#0 quit sortlist")
   },
-  refresh:function() {
+  refresh: function () {
     this.loadData(0);
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function () {
+  onLoad: function (options) {
+    var keyword = options.keyword;
+
+    console.log("index-search@onload,keyword=", keyword)
+
+    this.setData({ keyword: keyword });
     this.loadData(0);
-    console.log('===list.js@onLoad===');
+    console.log('===index-search.js@onLoad===');
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log('===list.js@onShow===');
+    console.log('===index-search.js@onShow===');
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    console.log('===list.js@onReady===');
+    console.log('===index-search.js@onReady===');
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    console.log('===list.js@onHide===');
+    console.log('===index-search.js@onHide===');
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log('===list.js@onUnload===');
+    console.log('===index-search.js@onUnload===');
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    console.log('===list.js@onPullDownRefresh===');
+    console.log('===index-search.js@onPullDownRefresh===');
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log('===list.js@onReachBottom===');
+    console.log('===index-search.js@onReachBottom===');
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    console.log('===list.js@onShareAppMessage===');
+    console.log('===index-search.js@onShareAppMessage===');
   },
 
   // Event handler.
