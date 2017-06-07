@@ -14,7 +14,7 @@
             </view>
         </block>
         <block wx:if="{{cellData.type == 'img'}}">
-            <image class="img" style="height: {{cellData.attr.height?cellData.attr.height:0}}px"  mode="aspectFit" src="{{cellData.attr.src}}" bindload="imageLoad"></image>
+            <image class="img" style="height: {{cellData.attr.height?cellData.attr.height:0}}px"  mode="aspectFit" data-index="{{itr_index}}" src="{{cellData.attr.src}}" bindload="imageLoad"></image>
         </block>
     </block>
 </template>
