@@ -10,7 +10,7 @@
   </view>
 
   <view class="sort">
-      <view class="{{sortTab==0 ? 'active' : ''}}" bindtap="sortlist" data-idx="0">默认</view>
+      <view class="{{sortTab==0 ? 'active' : ''}}" bindtap="sortlist" data-idx="0">更新时间</view>
       <view class="{{sortTab==1 ? 'active' : ''}}" bindtap="sortlist" data-idx="1">发布时间</view>
       <view class="{{sortTab==2 ? 'active' : ''}}" bindtap="sortlist" data-idx="2">回复数</view>
   </view>

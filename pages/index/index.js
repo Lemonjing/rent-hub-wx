@@ -20,6 +20,7 @@ Page({
       { list: this.data.list }
     );
   },
+  // 首页搜索转向
   toSearch:function(e) {
     var keyword = e.detail.value;
     wx.navigateTo({
