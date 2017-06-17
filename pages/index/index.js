@@ -104,10 +104,14 @@ Page({
       },
       fail:function(res) {
         var cacheIndexData = wx.getStorageSync('cacheIndexDataKey');
-        that.setData({ list: cacheIndexData.topic_list });
-        var newoffset = cacheIndexData.topic_list.length + offset
-        that.setData({ offset: newoffset });
-        console.log("load data from cache")
+        if (cacheIndexData != "") {
+          that.setData({ list: cacheIndexData.topic_list });
+          var newoffset = cacheIndexData.topic_list.length + offset
+          that.setData({ offset: newoffset });
+          console.log("load data from cache")
+        } else {
+          console.log("cache data is null")
+        }
       },
       complete:function() {
         // 关闭loading

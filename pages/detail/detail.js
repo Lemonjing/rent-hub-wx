@@ -53,6 +53,37 @@ Page({
         // console.log(json_content);
         that.setData({ info: res.data.detail, wxml_content: json_content });
         // console.log(that.data.wxml_content);
+        wx.setStorage({
+          key: 'cacheInfoKey',
+          data: res.data,
+        }),
+        wx.setStorage({
+          key: 'cacheContentKey',
+           data: json_content,
+        })
+      },
+      fail: function (res) {
+        var cacheInfoData = wx.getStorageSync('cacheInfoKey');
+        var cacheContentData = wx.getStorageSync('cacheContentKey');
+        
+        if (cacheInfoData != '' && cacheContentData != '') {
+          that.setData({ info: cacheInfoData.detail, wxml_content: cacheContentData });
+          console.log("load data from cache")
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: '肥肠抱歉，网络异常，请稍后再试',
+            confirmText:'返回',
+            showCancel: false,
+            success: function (res) {
+              if (res.confirm) {
+                wx.navigateBack({
+                  delta: 1
+                })
+              }
+            }
+          })
+        }
       },
       complete: function () {
         // 关闭loading

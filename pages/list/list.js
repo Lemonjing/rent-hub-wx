@@ -155,10 +155,14 @@ Page({
       },
       fail: function (res) {
         var cacheCityData = wx.getStorageSync('cacheCityDataKey');
-        that.setData({ list: cacheCityData.topic_list });
-        var newoffset = cacheCityData.topic_list.length + offset
-        that.setData({ offset: newoffset });
-        console.log("load data from cache")
+        if (cacheCityData != '') {
+          that.setData({ list: cacheCityData.topic_list });
+          var newoffset = cacheCityData.topic_list.length + offset
+          that.setData({ offset: newoffset });
+          console.log("load data from cache")
+        } else {
+          console.log("cache data is null")
+        }
       },
       complete: function () {
         // 关闭loading
@@ -197,8 +201,12 @@ Page({
       },
       fail: function (res) {
         var cacheRmdData = wx.getStorageSync('cacheRmdDataKey');
-        that.setData({ rmd_list: cacheRmdData.rmd_list });
-        console.log("load data from cache")
+        if (cacheRmdData != '') {
+          that.setData({ rmd_list: cacheRmdData.rmd_list });
+          console.log("load data from cache")
+        } else {
+          console.log("cache data is null")
+        }
       },
       complete: function () {
         // 关闭loading
