@@ -42,7 +42,7 @@ Page({
     console.log("options.id=", options.id)
     var that = this
     wx.request({
-      url: 'http://127.0.0.1:5000/api/detail/' + options.id,
+      url: 'https://tinymood.com/api/detail/' + options.id,
       data: {},
       header: {
         'content-type': 'application/json'

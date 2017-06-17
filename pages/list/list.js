@@ -19,16 +19,23 @@ Page({
 
   // 切换navTab设置currentNavtab
   switchTab: function (e) {
+    var navTabIndex = e.currentTarget.dataset.idx;
     this.setData({
-      currentNavtab: e.currentTarget.dataset.idx
+      // 0,1,2,3
+      currentNavtab: navTabIndex
     });
-    this.loadCityData(0);
+    if (navTabIndex == 0) {
+      this.loadRmdData(1)
+    } else {
+      this.loadCityData(0);
+    }
   },
 
   //点击图片触发事件
   swiperClick: function (e) {
+    var id = e.target.dataset.id;
     wx.navigateTo({
-      url: '../detail/detail?id=1',
+      url: '../detail/detail?id=' + id,
     })
   },
   // 城市列表图片404
@@ -83,7 +90,7 @@ Page({
     var that = this;
     var currentLimit = 10;
     wx.request({
-      url: 'http://127.0.0.1:5000/api/lists/',
+      url: 'https://tinymood.com/api/lists/',
       data: { offset: currentOffset, limit: currentLimit, city: city },
       headers: {
         'Content-Type': 'application/json'
@@ -100,7 +107,18 @@ Page({
           offset: res.data.topic_list.length + currentOffset,
           list: that.data.list.concat(res.data.topic_list)
         })
-      }
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: "服务器异常，请稍后再试。",
+          duration: 3000
+        });
+        that.setData({
+          loading: false,
+          plain: false
+        })
+        console.log("load more fail")
+      },
     })
   },
 
@@ -117,8 +135,8 @@ Page({
     var that = this
     var limit = 8
     wx.request({
-      url: 'http://127.0.0.1:5000/api/lists/',
-      data: { offset: offset, limit: limit, city: city, sort: sortTab},
+      url: 'https://tinymood.com/api/lists/',
+      data: { offset: offset, limit: limit, city: city, sort: sortTab },
       header: {
         'content-type': 'application/json'
       },
@@ -126,6 +144,21 @@ Page({
         that.setData({ list: res.data.topic_list });
         var newoffset = res.data.topic_list.length + offset;
         that.setData({ offset: newoffset });
+        //cache
+        if (offset == 0) {
+          wx.setStorage({
+            key: 'cacheCityDataKey',
+            data: res.data
+          })
+        }
+        console.log("load data from network")
+      },
+      fail: function (res) {
+        var cacheCityData = wx.getStorageSync('cacheCityDataKey');
+        that.setData({ list: cacheCityData.topic_list });
+        var newoffset = cacheCityData.topic_list.length + offset
+        that.setData({ offset: newoffset });
+        console.log("load data from cache")
       },
       complete: function () {
         // 关闭loading
@@ -137,7 +170,7 @@ Page({
   /**
    * 加载推荐数据
    */
-  loadRmdData: function () {
+  loadRmdData: function (call) {
     // 显示loading
     wx.showLoading({
       title: "加载中..."
@@ -145,7 +178,7 @@ Page({
     var that = this
     var limit = 8
     wx.request({
-      url: 'http://127.0.0.1:5000/api/recommended/',
+      url: 'https://tinymood.com/api/recommended/',
       data: { limit: limit },
       header: {
         'content-type': 'application/json'
@@ -153,6 +186,19 @@ Page({
       success: function (res) {
         console.log("rmd_list", res.data.rmd_list);
         that.setData({ rmd_list: res.data.rmd_list });
+        //cache
+        if (call == 0) {
+          wx.setStorage({
+            key: 'cacheRmdDataKey',
+            data: res.data
+          })
+        }
+        console.log("load data from network")
+      },
+      fail: function (res) {
+        var cacheRmdData = wx.getStorageSync('cacheRmdDataKey');
+        that.setData({ rmd_list: cacheRmdData.rmd_list });
+        console.log("load data from cache")
       },
       complete: function () {
         // 关闭loading
@@ -165,7 +211,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function () {
-    this.loadRmdData();
+    this.loadRmdData(0);
     console.log('===list.js@onLoad===');
   },
 

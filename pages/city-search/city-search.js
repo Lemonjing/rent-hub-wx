@@ -34,7 +34,7 @@ Page({
     var sortTab = this.data.sortTab
     var keyword = this.data.keyword;
     wx.request({
-      url: 'http://127.0.0.1:5000/api/search/all/',
+      url: 'https://tinymood.com/api/search/',
       data: { offset: currentOffset, limit: currentLimit, sort: sortTab, city: city, keyword: keyword },
       headers: {
         'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ Page({
     console.log("#1 sortTab=", sortTab)
 
     wx.request({
-      url: 'http://127.0.0.1:5000/api/search/',
+      url: 'https://tinymood.com/api/search/',
       data: { offset: offset, limit: limit, sort: sortTab, city: city, keyword: keyword },
       header: {
         'content-type': 'application/json'

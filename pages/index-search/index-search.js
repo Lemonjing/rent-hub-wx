@@ -34,7 +34,7 @@ Page({
     console.log("#2 sortTab=", sortTab)
 
     wx.request({
-      url: 'http://127.0.0.1:5000/api/search/all/',
+      url: 'https://tinymood.com/api/search/all/',
       data: { offset: currentOffset, limit: currentLimit, sort: sortTab, keyword: keyword },
       headers: {
         'Content-Type': 'application/json'
@@ -65,14 +65,15 @@ Page({
     var sortTab = this.data.sortTab
     var keyword = this.data.keyword;
     console.log("#1 sortTab=", sortTab)
-
+    console.log('keyword=', keyword)
     wx.request({
-      url: 'http://127.0.0.1:5000/api/search/all/',
+      url: 'https://tinymood.com/api/search/all/',
       data: { offset: offset, limit: limit, sort: sortTab, keyword: keyword },
       header: {
         'content-type': 'application/json'
       },
       success: function (res) {
+        console.log(res.data)
         that.setData({ list: res.data.topic_list, total_count: res.data.total_count         });
         var newoffset = res.data.topic_list.length + offset
         that.setData({ offset: newoffset });

@@ -8,6 +8,7 @@ Page({
     offset: 0,
     loading: false,
     plain:false,
+    moreHidden:"",
     sortTab:0,
   },
   // 解决图片404错误
@@ -37,7 +38,7 @@ Page({
     console.log("#2 sortTab=", sortTab)
 
     wx.request({
-      url: 'http://127.0.0.1:5000/api/lists/all/',
+      url: 'https://tinymood.com/api/lists/all/',
       data: { offset: currentOffset, limit: currentLimit, sort: sortTab},
       headers: {
         'Content-Type': 'application/json'
@@ -54,6 +55,19 @@ Page({
           offset: res.data.topic_list.length + currentOffset,
           list: that.data.list.concat(res.data.topic_list)
         })
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: "服务器异常，请稍后再试。",
+          duration:3000
+        });
+        that.setData({
+          loading: false,
+          plain: false
+        })
+        console.log("load more fail")
+      },
+      complete: function () {
       }
     })
   },
@@ -70,7 +84,7 @@ Page({
     console.log("#1 sortTab=", sortTab)
 
     wx.request({
-      url: 'http://127.0.0.1:5000/api/lists/all/',
+      url: 'https://tinymood.com/api/lists/all/',
       data: { offset: offset, limit: limit, sort: sortTab},
       header: {
         'content-type': 'application/json'
@@ -79,6 +93,21 @@ Page({
         that.setData({ list: res.data.topic_list });
         var newoffset = res.data.topic_list.length + offset
         that.setData({ offset: newoffset });
+        //cache
+        if (offset == 0) {
+          wx.setStorage({
+            key: 'cacheIndexDataKey',
+            data: res.data
+          })
+        }
+        console.log("load data from network")
+      },
+      fail:function(res) {
+        var cacheIndexData = wx.getStorageSync('cacheIndexDataKey');
+        that.setData({ list: cacheIndexData.topic_list });
+        var newoffset = cacheIndexData.topic_list.length + offset
+        that.setData({ offset: newoffset });
+        console.log("load data from cache")
       },
       complete:function() {
         // 关闭loading
