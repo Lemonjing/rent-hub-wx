@@ -134,6 +134,27 @@ Page({
     });
     var that = this
     var limit = 8
+
+    // 优先加载缓存
+    //分别为三种排序下的缓存数据
+    var cacheCityData0 = wx.getStorageSync('cacheCityDataKey0');
+    var cacheCityData1 = wx.getStorageSync('cacheCityDataKey1');
+    var cacheCityData2 = wx.getStorageSync('cacheCityDataKey2');
+    var cacheCityData = cacheCityData0
+    if (sortTab == 1) {
+      cacheCityData = cacheCityData1
+    } else if (sortTab == 2) {
+      cacheCityData = cacheCityData2
+    }
+    if (cacheCityData) {
+      that.setData({ list: cacheCityData.topic_list });
+      var newoffset = cacheCityData.topic_list.length + offset
+      that.setData({ offset: newoffset });
+      console.log("load data from cache")
+
+      wx.hideLoading();
+      return true;
+    }
     wx.request({
       url: 'https://tinymood.com/api/lists/',
       data: { offset: offset, limit: limit, city: city, sort: sortTab },
@@ -145,24 +166,35 @@ Page({
         var newoffset = res.data.topic_list.length + offset;
         that.setData({ offset: newoffset });
         //cache
-        if (offset == 0) {
+        if (offset == 0 && sortTab == 0) {
           wx.setStorage({
-            key: 'cacheCityDataKey',
+            key: 'cacheCityDataKey0',
+            data: res.data
+          })
+        } else if (offset == 0 && sortTab == 1) {
+          wx.setStorage({
+            key: 'cacheCityDataKey1',
+            data: res.data
+          })
+        } else if (offset == 0 && sortTab == 2) {
+          wx.setStorage({
+            key: 'cacheCityDataKey2',
             data: res.data
           })
         }
         console.log("load data from network")
       },
       fail: function (res) {
-        var cacheCityData = wx.getStorageSync('cacheCityDataKey');
-        if (cacheCityData != '') {
-          that.setData({ list: cacheCityData.topic_list });
-          var newoffset = cacheCityData.topic_list.length + offset
-          that.setData({ offset: newoffset });
-          console.log("load data from cache")
-        } else {
-          console.log("cache data is null")
-        }
+        wx.showModal({
+          title: '提示',
+          content: '非常抱歉，网络异常，请稍后再试',
+          confirmText: '返回',
+          showCancel: false,
+          success: function (res) {
+            //do nothing
+          }
+        }),
+        console.log("server error")
       },
       complete: function () {
         // 关闭loading
