@@ -84,6 +84,27 @@ Page({
 
     console.log("#1 sortTab=", sortTab)
 
+    //分别为三种排序下的缓存数据
+    var cacheIndexData0 = wx.getStorageSync('cacheIndexDataKey0');
+    var cacheIndexData1 = wx.getStorageSync('cacheIndexDataKey1');
+    var cacheIndexData2 = wx.getStorageSync('cacheIndexDataKey2');
+    var cacheIndexData = cacheIndexData0
+    if (sortTab == 1) {
+      cacheIndexData = cacheIndexData1
+    } else if (sortTab == 2) {
+      cacheIndexData = cacheIndexData2
+    }
+    // 优先加载缓存
+    if (cacheIndexData) {
+      that.setData({ list: cacheIndexData.topic_list });
+      var newoffset = cacheIndexData.topic_list.length + offset
+      that.setData({ offset: newoffset });
+      console.log("load data from cache")
+
+      wx.hideLoading();
+      return true
+    }
+    // 没有缓存请求服务器
     wx.request({
       url: 'https://tinymood.com/api/lists/all/',
       data: { offset: offset, limit: limit, sort: sortTab},
@@ -95,24 +116,36 @@ Page({
         var newoffset = res.data.topic_list.length + offset
         that.setData({ offset: newoffset });
         //cache
-        if (offset == 0) {
+        if (offset == 0 && sortTab == 0) {
           wx.setStorage({
-            key: 'cacheIndexDataKey',
+            key: 'cacheIndexDataKey0',
+            data: res.data
+          })
+        } else if (offset == 0 && sortTab == 1) {
+          wx.setStorage({
+            key: 'cacheIndexDataKey1',
+            data: res.data
+          })
+        } else if (offset == 0 && sortTab == 2) {
+          wx.setStorage({
+            key: 'cacheIndexDataKey2',
             data: res.data
           })
         }
         console.log("load data from network")
       },
+      //请求服务器失败
       fail:function(res) {
-        var cacheIndexData = wx.getStorageSync('cacheIndexDataKey');
-        if (cacheIndexData != "") {
-          that.setData({ list: cacheIndexData.topic_list });
-          var newoffset = cacheIndexData.topic_list.length + offset
-          that.setData({ offset: newoffset });
-          console.log("load data from cache")
-        } else {
-          console.log("cache data is null")
-        }
+        wx.showModal({
+          title: '提示',
+          content: '非常抱歉，网络异常，请稍后再试',
+          confirmText: '返回',
+          showCancel: false,
+          success: function (res) {
+            //do nothing
+          }
+        }),
+        console.log("server error")
       },
       complete:function() {
         // 关闭loading

@@ -25,7 +25,7 @@
       <image src="../../images/search.png"></image>
       <input placeholder="城市租房搜索" placeholder-class="search-placeholder" bindconfirm="toSearch"/>
     </view>
-    <view class="search-right flex-item" bindtap="loadData">
+    <view class="search-right flex-item" bindtap="refresh">
       <image src="../../images/lighting.png"></image>
     </view>
   </view>

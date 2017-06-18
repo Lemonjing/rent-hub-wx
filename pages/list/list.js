@@ -181,6 +181,17 @@ Page({
     });
     var that = this
     var limit = 8
+
+    //优先加载缓存
+    var cacheRmdData = wx.getStorageSync('cacheRmdDataKey');
+    if (cacheRmdData) {
+      console.log("rmd_list", cacheRmdData.rmd_list);
+      that.setData({ rmd_list: cacheRmdData.rmd_list });
+      console.log("load data from cache")
+      wx.hideLoading();
+      return true
+    }
+    //没有缓存请求服务器
     wx.request({
       url: 'https://tinymood.com/api/recommended/',
       data: { limit: limit },
@@ -200,13 +211,16 @@ Page({
         console.log("load data from network")
       },
       fail: function (res) {
-        var cacheRmdData = wx.getStorageSync('cacheRmdDataKey');
-        if (cacheRmdData != '') {
-          that.setData({ rmd_list: cacheRmdData.rmd_list });
-          console.log("load data from cache")
-        } else {
-          console.log("cache data is null")
-        }
+        wx.showModal({
+          title: '提示',
+          content: '非常抱歉，网络异常，请稍后再试',
+          confirmText: '返回',
+          showCancel: false,
+          success: function (res) {
+            //do nothing
+          }
+        }),
+        console.log("server error")
       },
       complete: function () {
         // 关闭loading
@@ -221,6 +235,14 @@ Page({
   onLoad: function () {
     this.loadRmdData(0);
     console.log('===list.js@onLoad===');
+  },
+
+  /**
+   * 右上角刷新
+   */
+  refresh: function () {
+    console.log("refresh", this.data.sortTab, this.data.currentNavtab)
+    this.loadCityData(0);
   },
 
   /**

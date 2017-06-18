@@ -41,6 +41,16 @@ Page({
     });
     console.log("options.id=", options.id)
     var that = this
+
+    //优先加载缓存
+    var cacheInfoData = wx.getStorageSync('cacheInfoKey' + options.id);
+    var cacheContentData = wx.getStorageSync('cacheContentKey' + options.id);
+    if (cacheInfoData && cacheContentData) {
+      that.setData({ info: cacheInfoData.detail, wxml_content: cacheContentData });
+      console.log("load detail data from cache");
+      wx.hideLoading();
+      return true
+    }
     wx.request({
       url: 'https://tinymood.com/api/detail/' + options.id,
       data: {},
@@ -54,25 +64,19 @@ Page({
         that.setData({ info: res.data.detail, wxml_content: json_content });
         // console.log(that.data.wxml_content);
         wx.setStorage({
-          key: 'cacheInfoKey',
+          key: 'cacheInfoKey' + options.id,
           data: res.data,
         }),
         wx.setStorage({
-          key: 'cacheContentKey',
-           data: json_content,
-        })
+          key: 'cacheContentKey' + options.id,
+          data: json_content,
+        }),
+        console.log("load detail data from network");
       },
       fail: function (res) {
-        var cacheInfoData = wx.getStorageSync('cacheInfoKey');
-        var cacheContentData = wx.getStorageSync('cacheContentKey');
-        
-        if (cacheInfoData != '' && cacheContentData != '') {
-          that.setData({ info: cacheInfoData.detail, wxml_content: cacheContentData });
-          console.log("load data from cache")
-        } else {
           wx.showModal({
             title: '提示',
-            content: '肥肠抱歉，网络异常，请稍后再试',
+            content: '非常抱歉，网络异常，请稍后再试',
             confirmText:'返回',
             showCancel: false,
             success: function (res) {
@@ -83,7 +87,6 @@ Page({
               }
             }
           })
-        }
       },
       complete: function () {
         // 关闭loading
