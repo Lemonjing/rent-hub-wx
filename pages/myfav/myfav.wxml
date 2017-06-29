@@ -1,19 +1,8 @@
-<!--index.wxml-->
+<!--index-search.wxml-->
 <view class="container">
-<view class="search flex-wrp">
-      <view class="search-left flex-item">
-          <image src="../../images/search.png"></image>
-          <input placeholder="全局搜索租房信息" placeholder-class="search-placeholder" bindconfirm="toSearch"/>
-      </view>
-      <view class="search-right flex-item" bindtap="refresh">
-          <image src="../../images/lighting.png"></image>
-      </view>
-  </view>
 
   <view class="sort">
-      <view class="{{sortTab==0 ? 'active' : ''}}" bindtap="sortlist" data-idx="0">更新时间</view>
-      <view class="{{sortTab==1 ? 'active' : ''}}" bindtap="sortlist" data-idx="1">发布时间</view>
-      <view class="{{sortTab==2 ? 'active' : ''}}" bindtap="sortlist" data-idx="2">回复数</view>
+      <view class="active" bindtap="sortlist" data-idx="0">我的收藏</view>
   </view>
 
   <view class="news-item-container">
@@ -35,7 +24,8 @@
         </view>
       </navigator>
     </block>
-    <button type=" " class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore" style="display:{{moreHidden}}"> 更多 </button>
+    <button type=" " class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore"> 更多 </button>
+    <text>=={{offset}}==</text>
   </view>
 
 </view>

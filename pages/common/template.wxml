@@ -38,5 +38,4 @@
 
 <template name="button">
   <button type=" " class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadCityMore"> 更多 </button>
-  <text>=={{offset}}==</text>
 </template>

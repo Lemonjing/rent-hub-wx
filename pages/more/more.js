@@ -9,14 +9,14 @@ Page({
   },
 
   bindViewTap: function () {
-    console.log('===me.js@bindViewTap===');
+    console.log('===more.js@bindViewTap===');
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function () {
-    console.log('===me.js@onLoad===');
+    console.log('===more.js@onLoad===');
     var that = this
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function (userInfo) {
@@ -25,55 +25,57 @@ Page({
         userInfo: userInfo
       })
     })
+
+    console.log(that.data.userInfo)
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log('===me.js@onShow===');
+    console.log('===more.js@onShow===');
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    console.log('===me.js@onReady===');
+    console.log('===more.js@onReady===');
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    console.log('===me.js@onHide===');
+    console.log('===more.js@onHide===');
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log('===me.js@onUnload===');
+    console.log('===more.js@onUnload===');
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    console.log('===me.js@onPullDownRefresh===');
+    console.log('===more.js@onPullDownRefresh===');
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log('===me.js@onReachBottom===');
+    console.log('===more.js@onReachBottom===');
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    console.log('===me.js@onShareAppMessage===');
+    console.log('===more.js@onShareAppMessage===');
   },
 
   // Event handler.
@@ -86,6 +88,30 @@ Page({
   relief: function () {
     wx.navigateTo({
       url: '../relief/relief',
+    })
+  },
+
+  reply: function () {
+    wx.showModal({
+      title: '反馈邮箱',
+      content: 'xmusaber@163.com',
+      confirmText: '好的',
+      showCancel: false,
+      success: function (res) {
+        //do nothing
+      }
+    })
+  },
+
+  tobeadded: function () {
+    wx.showToast({
+      title: '尚未实现',
+    })
+  },
+
+  myfav: function () {
+    wx.navigateTo({
+      url: '../myfav/myfav',
     })
   },
 

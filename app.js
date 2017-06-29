@@ -16,24 +16,31 @@ App({
   onHide: function () {
     console.log("=====app.js@onHide====");
   },
-  getUserInfo:function(cb){
+
+  getUserInfo: function (cb) {
     var that = this
-    if(this.globalData.userInfo){
+    if (this.globalData.userInfo) {
       typeof cb == "function" && cb(this.globalData.userInfo)
-    }else{
+    } else {
       //调用登录接口
       wx.login({
         success: function () {
+
+          console.log("=============1")
+
           wx.getUserInfo({
             success: function (res) {
+              console.log("==============2")
               that.globalData.userInfo = res.userInfo
-              typeof cb == "function" && cb(that.globalData.userInfo)
+              typeof cb == "function" && cb(that.globalData.userInfo);
+              console.log("=====app.js@userinfo=", that.globalData.userInfo);
             }
           })
         }
       })
     }
   },
+  
   globalData:{
     userInfo:null
   }

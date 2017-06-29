@@ -35,7 +35,6 @@
       </navigator>
     </block>
     <button type=" " class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore"> 更多 </button>
-    <text>=={{offset}}==</text>
   </view>
 
 </view>

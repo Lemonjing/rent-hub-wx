@@ -14,6 +14,16 @@ Page({
     console.log('===detail.js@bindViewTap===');
   },
 
+  bindFavTap: function (e) {
+    var id = e.currentTarget.dataset.id;
+    console.log('===detail.js@bindFavTap===');
+    console.log('===id=', id);
+
+    wx.showToast({
+      title: '已收藏',
+    })
+  },
+
   stockClick: function (e) {
     var secCode = e.currentTarget.dataset.seccode;
     var secName = e.currentTarget.dataset.secname;

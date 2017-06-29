@@ -1,4 +1,4 @@
-/**index.wxss**/
+/**index-search.wxss**/
 
 .news-item-container {
   background-color: #f2f2f2;
@@ -82,39 +82,38 @@
 
 .container .search{
   width: 735rpx;
-  height: 80rpx;
+  height: 65rpx;
   padding: 12.5rpx 0 12.5rpx 16rpx;
   background: #36828b;
 }
 .container .search-left{
   flex: 8;
-  background: #36828b;
+  background: #B0B0B0;
   text-align: left;
 }
 .container .search-left input{
   display: inline-block;
-  height: 60rpx;
-  font-size: 38rpx;
+  height: 65rpx;
+  font-size: 26rpx;
+  color:#fff;
 }
 .search-placeholder{
   color: #fff;
-  /*line-height: 20rpx;*/
+  line-height: 20rpx;
 }
 .container .search .search-left image{
   display: inline-block;
   width: 35rpx;
   height: 35rpx;
-  padding: 10rpx 15rpx 0rpx 20rpx;
-  margin-top:15rpx;
+  padding: 15rpx 15rpx 15rpx 20rpx;
 }
-
 .container .search .search-right{
   flex: 1;
 }
 
 .container .search .search-right image{
-  width: 55rpx;
-  height: 55rpx;
+  width: 45rpx;
+  height: 45rpx;
   padding: 10rpx;
 }
 
@@ -130,4 +129,10 @@
 .sort .active{
   color: #000;
   border-bottom: solid 2px #000;
+}
+
+.search-res {
+  font-size: 14px;
+  padding:5px 0;
+  line-height: 28px;
 }
