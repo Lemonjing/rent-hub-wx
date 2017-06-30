@@ -26,6 +26,8 @@ Page({
     });
     if (navTabIndex == 0) {
       this.loadRmdData(1)
+    } else if (navTabIndex == 3) {
+      this.loadFavData(0);
     } else {
       this.loadCityData(0);
     }
@@ -253,6 +255,40 @@ Page({
           }
         }),
         console.log("server error")
+      },
+      complete: function () {
+        // 关闭loading
+        wx.hideLoading();
+      }
+    })
+  },
+
+  /**
+   * 加载收藏数据
+   */
+  loadFavData: function (offset) {
+    // 显示loading
+    wx.showLoading({
+      title: "加载中..."
+    });
+    var that = this
+    var limit = 8
+
+    var user_id = wx.getStorageSync("user").openid;
+
+    console.log("userid=", user_id)
+
+    wx.request({
+      url: 'https://tinymood.com/api/fav/' + user_id,
+      data: { offset: offset, limit: limit },
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        console.log(res.data)
+        that.setData({ list: res.data.favorite, total_count: 0 });
+        var newoffset = res.data.favorite.length + offset
+        that.setData({ offset: newoffset });
       },
       complete: function () {
         // 关闭loading

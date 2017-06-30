@@ -1,10 +1,5 @@
-<!--index-search.wxml-->
+<!--myfav.wxml-->
 <view class="container">
-
-  <view class="sort">
-      <view class="active" bindtap="sortlist" data-idx="0">我的收藏</view>
-  </view>
-
   <view class="news-item-container">
     <block wx:for="{{list}}" wx:for-index="itr_index" wx:key="id">
       <navigator url="../detail/detail?id={{item.id}}">
@@ -14,18 +9,18 @@
             <view class="news-item-left-bottom">
               <image src="{{item.headimage}}" class="userface" />
               <view>
-              <text class="news-item-text1">{{item.user}}</text>
-              <text class="news-item-text2">{{item.updatetime}}</text></view>
+                <text class="news-item-text1">{{item.user}}</text>
+                <text class="news-item-text2">{{item.updatetime}}</text>
+              </view>
             </view>
           </view>
           <view class="news-item-right">
-            <image src="{{item.coverimage}}" class="news-image" data-errorimg="{{itr_index}}" binderror="errorImg"/>
+            <image src="{{item.coverimage}}" class="news-image" data-errorimg="{{itr_index}}" binderror="errorImg" />
           </view>
         </view>
       </navigator>
     </block>
-    <button type=" " class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore"> 更多 </button>
-    <text>=={{offset}}==</text>
+    <!--<button type=" " class="load-btn" data-offset="{{offset}}" loading="{{loading}}" plain="{{plain}}" bindtap="loadMore"> 更多 </button>-->
   </view>
-
+  <view class="copyright">Powered by Insomnia ©2017 RentHub</view>
 </view>

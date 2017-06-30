@@ -7,7 +7,7 @@ Page({
   data: {
     info: {},
     wxml_content: {},
-    pageCount:1
+    pageCount: 1
   },
 
   bindViewTap: function () {
@@ -15,13 +15,29 @@ Page({
   },
 
   bindFavTap: function (e) {
-    var id = e.currentTarget.dataset.id;
+    var that = this
+    var info_id = e.currentTarget.dataset.id;
+    var user_id = wx.getStorageSync("user").openid;
     console.log('===detail.js@bindFavTap===');
-    console.log('===id=', id);
+    console.log('===info_id=', info_id);
+    console.log('===user_id=', user_id);
 
-    wx.showToast({
-      title: '已收藏',
-    })
+    wx.request({
+      url: 'https://tinymood.com/api/addfav/',
+      data: { user_id: user_id, info_id: info_id },
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        console.log(res.data);
+        wx.setStorageSync('cacheFavKey', true);
+        console.log("add fav success");
+      }
+    }),
+
+      wx.showToast({
+        title: '已收藏',
+      })
   },
 
   stockClick: function (e) {
@@ -29,7 +45,7 @@ Page({
     var secName = e.currentTarget.dataset.secname;
     console.log("stockClick:" + secCode + ";secName:" + secName);
   },
-  
+
   imageLoad: function (e) {
     var width = e.detail.width;
     var height = e.detail.height;
@@ -52,6 +68,14 @@ Page({
     console.log("options.id=", options.id)
     var that = this
 
+    /**
+     * to do
+     */
+    //load Fav Data 
+    // var cacheFavValue = wx.getStorageSync('cacheFavKey');
+    // that.setData({ isFav: cacheFavValue });
+    // console.log("cacheFavValue=", cacheFavValue);
+
     //优先加载缓存
     var cacheInfoData = wx.getStorageSync('cacheInfoKey' + options.id);
     var cacheContentData = wx.getStorageSync('cacheContentKey' + options.id);
@@ -61,6 +85,7 @@ Page({
       wx.hideLoading();
       return true
     }
+
     wx.request({
       url: 'https://tinymood.com/api/detail/' + options.id,
       data: {},
@@ -77,26 +102,26 @@ Page({
           key: 'cacheInfoKey' + options.id,
           data: res.data,
         }),
-        wx.setStorage({
-          key: 'cacheContentKey' + options.id,
-          data: json_content,
-        }),
-        console.log("load detail data from network");
+          wx.setStorage({
+            key: 'cacheContentKey' + options.id,
+            data: json_content,
+          }),
+          console.log("load detail data from network");
       },
       fail: function (res) {
-          wx.showModal({
-            title: '提示',
-            content: '非常抱歉，网络异常，请稍后再试',
-            confirmText:'返回',
-            showCancel: false,
-            success: function (res) {
-              if (res.confirm) {
-                wx.navigateBack({
-                  delta: 1
-                })
-              }
+        wx.showModal({
+          title: '提示',
+          content: '非常抱歉，网络异常，请稍后再试',
+          confirmText: '返回',
+          showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
+              wx.navigateBack({
+                delta: 1
+              })
             }
-          })
+          }
+        })
       },
       complete: function () {
         // 关闭loading

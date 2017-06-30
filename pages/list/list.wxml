@@ -84,8 +84,25 @@
   </view>
     
   <view class="ctnt3 placehold" hidden="{{currentNavtab==3 ? '' : true}}">
-     <template is="search" data=""/>
-     <template is="button" data="{{offset,plain,loading}}" />
+    <block wx:for="{{list}}" wx:for-index="idx" wx:key="id">
+      <navigator url="../detail/detail?id={{item.id}}">
+        <view class="news-item">
+          <view class="news-item-left">
+            <text class="news-item-title">{{item.title}}</text>
+            <view class="news-item-left-bottom">
+              <image src="{{item.headimage}}" class="userface" />
+              <view>
+                <text class="news-item-text1">{{item.user}}</text>
+                <text class="news-item-text2">{{item.updatetime}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="news-item-right">
+            <image src="{{item.coverimage}}" class="news-image" />
+          </view>
+        </view>
+      </navigator>
+    </block>
   </view>
-
+<view class="copyright">Powered by Insomnia ©2017 RentHub</view>
 </view>

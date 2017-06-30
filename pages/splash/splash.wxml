@@ -3,7 +3,8 @@
   <image class="slogan-paper" mode="aspectFill" src="/images/slogan_paper.jpg"></image>
   <view class="session-content">
     <view class="slogan-wrapper">
-      <text class="slogan-text">生活可以不是</text>
+      <text class="slogan-text">by {{userInfo.nickName}}</text>
+      <text class="slogan-text">但生活可以不是</text>
       <text class="slogan-text">是租来的</text>
       <text class="slogan-text">房子</text>
     </view>
@@ -15,6 +16,6 @@
   <!--<view class="userinfo">
     <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}"></image>
     <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-  </view>
- -->
+  </view>-->
+ 
 </view>

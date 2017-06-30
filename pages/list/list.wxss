@@ -72,7 +72,7 @@
   margin-left: 8px;
   margin-right: 8px;
   margin-top: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 5rpx;
   /*display: block;*/
   line-height: 2.3;
   font-size: 13px;
@@ -147,7 +147,7 @@
 }
 .placehold{
   font-size: 28rpx;
-  padding: 80rpx 0;
+  padding: 80rpx 0 10rpx 0;
 }
 
 .sort {
@@ -163,4 +163,10 @@
 .sort .active{
   color: #000;
   border-bottom: solid 2px #000;
+}
+
+.copyright {
+  font-size: 14px;
+  margin-top: 5rpx;
+  margin-bottom: 10rpx;
 }

@@ -6,6 +6,11 @@ Page({
     motto: 'RentHub'
   },
   onLoad: function (options) {
+    var user = wx.getStorageSync("user");
+    var userInfo = wx.getStorageSync("userInfo");
+    this.setData({userInfo:userInfo});
+    console.log("splash@user=", user);
+    console.log("splash@userInfo=", userInfo);
   },
   onReady: function () {
     // 页面渲染完成
