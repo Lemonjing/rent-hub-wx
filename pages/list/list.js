@@ -76,7 +76,7 @@ Page({
       sortTab: e.currentTarget.dataset.idx
     });
     var that = this;
-    this.loadCityData(0);
+    that.loadCityData(0);
   },
 
   loadCityMore(e) {
@@ -139,24 +139,49 @@ Page({
 
     // 优先加载缓存
     //分别为三种排序下的缓存数据
-    var cacheCityData0 = wx.getStorageSync('cacheCityDataKey0');
-    var cacheCityData1 = wx.getStorageSync('cacheCityDataKey1');
-    var cacheCityData2 = wx.getStorageSync('cacheCityDataKey2');
-    var cacheCityData = cacheCityData0
-    if (sortTab == 1) {
-      cacheCityData = cacheCityData1
-    } else if (sortTab == 2) {
-      cacheCityData = cacheCityData2
-    }
-    if (cacheCityData) {
-      that.setData({ list: cacheCityData.topic_list });
-      var newoffset = cacheCityData.topic_list.length + offset
-      that.setData({ offset: newoffset });
-      console.log("load data from cache")
+    if (city == 0) {
+      var cacheHZCityData0 = wx.getStorageSync('cacheHZCityDataKey0');
+      var cacheHZCityData1 = wx.getStorageSync('cacheHZCityDataKey1');
+      var cacheHZCityData2 = wx.getStorageSync('cacheHZCityDataKey2');
 
-      wx.hideLoading();
-      return true;
+      var cacheCityData = cacheHZCityData0
+      if (sortTab == 1) {
+        cacheCityData = cacheHZCityData1
+      } else if (sortTab == 2) {
+        cacheCityData = cacheHZCityData2
+      }
+      if (cacheCityData) {
+        that.setData({ list: cacheCityData.topic_list });
+        var newoffset = cacheCityData.topic_list.length + offset
+        that.setData({ offset: newoffset });
+        console.log("load data from cache")
+
+        wx.hideLoading();
+        return true;
+      }
+    } else if (city == 1) {
+      var cacheSHCityData0 = wx.getStorageSync('cacheSHCityDataKey0');
+      var cacheSHCityData1 = wx.getStorageSync('cacheSHCityDataKey1');
+      var cacheSHCityData2 = wx.getStorageSync('cacheSHCityDataKey2');
+
+      var cacheCityData = cacheSHCityData0
+      if (sortTab == 1) {
+        cacheCityData = cacheSHCityData1
+      } else if (sortTab == 2) {
+        cacheCityData = cacheSHCityData2
+      }
+      if (cacheCityData) {
+        that.setData({ list: cacheCityData.topic_list });
+        var newoffset = cacheCityData.topic_list.length + offset
+        that.setData({ offset: newoffset });
+        console.log("load data from cache")
+
+        wx.hideLoading();
+        return true;
+      }
     }
+
+    // load from network
     wx.request({
       url: 'https://tinymood.com/api/lists/',
       data: { offset: offset, limit: limit, city: city, sort: sortTab },
@@ -168,19 +193,34 @@ Page({
         var newoffset = res.data.topic_list.length + offset;
         that.setData({ offset: newoffset });
         //cache
-        if (offset == 0 && sortTab == 0) {
+        if (offset == 0 && sortTab == 0 && city == 0) {
           wx.setStorage({
-            key: 'cacheCityDataKey0',
+            key: 'cacheHZCityDataKey0',
             data: res.data
           })
-        } else if (offset == 0 && sortTab == 1) {
+        } else if (offset == 0 && sortTab == 1 && city ==0) {
           wx.setStorage({
-            key: 'cacheCityDataKey1',
+            key: 'cacheHZCityDataKey1',
             data: res.data
           })
-        } else if (offset == 0 && sortTab == 2) {
+        } else if (offset == 0 && sortTab == 2 && city ==0) {
           wx.setStorage({
-            key: 'cacheCityDataKey2',
+            key: 'cacheHZCityDataKey2',
+            data: res.data
+          })
+        } else if (offset == 0 && sortTab == 0 && city == 1) {
+          wx.setStorage({
+            key: 'cacheSHCityDataKey0',
+            data: res.data
+          })
+        } else if (offset == 0 && sortTab == 1 && city == 1) {
+          wx.setStorage({
+            key: 'cacheSHCityDataKey1',
+            data: res.data
+          })
+        } else if (offset == 0 && sortTab == 2 && city == 1) {
+          wx.setStorage({
+            key: 'cacheSHCityDataKey2',
             data: res.data
           })
         }

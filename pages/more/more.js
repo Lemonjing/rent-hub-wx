@@ -101,8 +101,31 @@ Page({
 
   tobeadded: function () {
     wx.showToast({
-      title: '尚未实现',
+      title: '暂未开放',
     })
+  },
+
+  removeCache: function () {
+    wx.showModal({
+      title: '提示',
+      content: '确定清除所有数据缓存？',
+      confirmText: "确定",
+      success:function(res){
+        if (res.confirm) {
+          try {
+            wx.clearStorageSync()
+            wx.showToast({
+              title: '清除结束',
+            })
+          } catch (e) {
+            console.log("remove cache error")
+          }
+        } else if (res.cancel){
+          //do nothing
+        }
+      }
+    })
+    
   },
 
   myfav: function () {

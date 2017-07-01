@@ -5,8 +5,14 @@
       <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
     </view>
     <view class="user-info flex-item">
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      <text class="edit">查看或编辑个人主页</text>
+      <block wx-if="{{userInfo != null && userInfo != ''}}">
+        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+        <text class="edit">欢迎使用RentHub</text>
+      </block>
+      <block wx-if="{{userInfo == null || userInfo == ''}}">
+        <text class="userinfo-nickname">您未授权小程序使用您的个人信息</text>
+        <text class="edit">请删除小程序后重新使用并授权</text>
+      </block>
     </view>
   </view>
 
@@ -55,7 +61,7 @@
       <view class="myitem-icon flex-item" >
         <image src="../../images/live.png"></image>
       </view>
-      <view class="myitem-name flex-item">
+      <view class="myitem-name flex-item" bindtap="removeCache">
         <text>清除缓存</text>
       </view>
     </view>
